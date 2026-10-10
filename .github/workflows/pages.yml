@@ -1,0 +1,82 @@
+name: Build and deploy fuzzley.info
+
+# Builds the site from fuzzley/fuzzley and publishes it with GitHub Pages.
+# fuzzley/fuzzley's workflow triggers this after every push to its main
+# branch, passing the commit to build. It can also be run by hand from the
+# Actions tab, which builds the tip of main.
+#
+# Requires: Settings > Pages > Source set to "GitHub Actions", and the
+# repository variable GA_AG_MEASUREMENT_ID (Settings > Secrets and variables >
+# Actions > Variables). Without the variable the site works and analytics
+# stays off.
+
+on:
+  repository_dispatch:
+    types: [fuzzley-updated]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# GitHub recommends letting an in-progress Pages deployment finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout fuzzley/fuzzley
+        uses: actions/checkout@v7
+        with:
+          repository: fuzzley/fuzzley
+          ref: ${{ github.event.client_payload.sha || 'main' }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: yarn install --immutable
+
+      # COMMIT_SHA names the fuzzley commit in the footer and version.json.
+      # This workflow's own GITHUB_SHA is a commit in this repository.
+      - name: Build
+        working-directory: frontend
+        env:
+          COMMIT_SHA: ${{ github.event.client_payload.sha }}
+        run: yarn build
+
+      # The same file docker-entrypoint.d/40-generate-env-config.sh writes in
+      # the container. The ID isn't secret: every visitor's browser sends it.
+      - name: Write runtime config
+        env:
+          GA_ID: ${{ vars.GA_AG_MEASUREMENT_ID }}
+        run: |
+          printf 'window.__ENV = { GA_ID: "%s" };\n' "$GA_ID" > frontend/dist/env.js
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
