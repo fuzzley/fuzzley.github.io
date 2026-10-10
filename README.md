@@ -6,7 +6,8 @@ The site's source lives in [fuzzley/fuzzley](https://github.com/fuzzley/fuzzley)
 This repository only holds the deploy workflow,
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which builds that
 source and publishes it. fuzzley/fuzzley triggers it after every push to its
-`main` branch; it can also be run by hand from the Actions tab.
+`main` branch and waits for it, so a failed deploy shows on that commit too;
+it can also be run by hand from the Actions tab.
 
 Settings it depends on:
 

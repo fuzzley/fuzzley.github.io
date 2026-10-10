@@ -10,6 +10,10 @@ name: Build and deploy fuzzley.info
 # Actions > Variables). Without the variable the site works and analytics
 # stays off.
 
+# fuzzley/fuzzley finds the run it triggered by the "(fuzzley run <id>)" in
+# this name and waits for it, so a failed deploy fails that run too.
+run-name: ${{ github.event_name == 'repository_dispatch' && format('Deploy fuzzley@{0} (fuzzley run {1})', github.event.client_payload.sha, github.event.client_payload.run) || 'Deploy fuzzley@main' }}
+
 on:
   repository_dispatch:
     types: [fuzzley-updated]
