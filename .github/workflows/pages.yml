@@ -57,10 +57,13 @@ jobs:
 
       # COMMIT_SHA names the fuzzley commit in the footer and version.json.
       # This workflow's own GITHUB_SHA is a commit in this repository.
+      # PLAY_ORIGIN leaves the games out of this copy and points every play
+      # link at them on fuzzley.info.
       - name: Build
         working-directory: frontend
         env:
           COMMIT_SHA: ${{ github.event.client_payload.sha }}
+          PLAY_ORIGIN: https://fuzzley.info
         run: yarn build
 
       # The same file docker-entrypoint.d/40-generate-env-config.sh writes in
