@@ -1,6 +1,9 @@
-name: Build and deploy fuzzley.info
+name: Build and deploy fuzzley.github.io
 
-# Builds the site from fuzzley/fuzzley and publishes it with GitHub Pages.
+# Builds the site from fuzzley/fuzzley and publishes it with GitHub Pages at
+# https://fuzzley.github.io/, a copy of fuzzley.info. fuzzley.info itself is
+# served by Cloud Run and doesn't depend on this workflow.
+#
 # fuzzley/fuzzley's workflow triggers this after every push to its main
 # branch, passing the commit to build. It can also be run by hand from the
 # Actions tab, which builds the tip of main.
