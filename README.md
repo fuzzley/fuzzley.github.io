@@ -4,7 +4,10 @@ Publishes a copy of [fuzzley.info](https://fuzzley.info) at
 https://fuzzley.github.io/ with GitHub Pages. fuzzley.info is the primary
 site, served by Cloud Run from fuzzley/fuzzley's Docker image; this copy does
 not replace it. The copy leaves out the games: every play link goes to the
-game on fuzzley.info.
+game on fuzzley.info, except the Solitaire Collection's, which goes to
+https://fuzzley.games/play/solitaire/, where it is played now. Its old
+addresses here, `/projects/solitaire/play/` and `/project/solitaire/`, are
+pages that forward there.
 
 The site's source lives in [fuzzley/fuzzley](https://github.com/fuzzley/fuzzley).
 This repository only holds the deploy workflow,

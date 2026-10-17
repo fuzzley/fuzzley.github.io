@@ -58,7 +58,8 @@ jobs:
       # COMMIT_SHA names the fuzzley commit in the footer and version.json.
       # This workflow's own GITHUB_SHA is a commit in this repository.
       # PLAY_ORIGIN leaves the games out of this copy and points every play
-      # link at them on fuzzley.info.
+      # link at them on fuzzley.info, except a game fuzzley/fuzzley says is
+      # played on another site (the Solitaire Collection, on fuzzley.games).
       - name: Build
         working-directory: frontend
         env:
