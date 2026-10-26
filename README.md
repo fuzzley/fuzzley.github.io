@@ -7,8 +7,7 @@ not replace it. The copy leaves out the games: every play link goes to the
 game on fuzzley.info, except the Solitaire Collection's and Minesweeper's,
 which go to https://fuzzley.games/play/solitaire/ and
 https://fuzzley.games/play/minesweeper/, where they are played now. Their old
-addresses here, `/projects/<slug>/play/` and `/project/<slug>/`, are pages
-that forward there.
+addresses here, `/projects/<slug>/play/` and `/project/<slug>/`, answer 404.
 
 The site's source lives in [fuzzley/fuzzley](https://github.com/fuzzley/fuzzley).
 This repository only holds the deploy workflow,
